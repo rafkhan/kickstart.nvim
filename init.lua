@@ -354,9 +354,24 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
+        -- Groups
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>f', group = '[F]ile/Find' },
+        { '<leader>b', group = '[B]uffer' },
+        { '<leader>g', group = '[G]it' },
+        { '<leader>r', group = 'Misc' },
+
+        -- Custom keybindings from lua/custom/keybindings.lua
+        { '<leader>T', desc = 'Open [T]erminal' },
+        { '<leader>rp', desc = 'Copy file [p]ath' },
+        { '<leader>x', desc = 'Cut to clipboard' },
+        { '<leader>xx', desc = 'Cut entire line to clipboard' },
+
+        -- Oil plugin keybindings
+        { '<leader>-', desc = 'Open parent directory (floating)' },
+        { '-', desc = 'Open parent directory' },
       },
     },
   },
@@ -439,6 +454,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<leader>F', builtin.find_files, { desc = 'Find [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })

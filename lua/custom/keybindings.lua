@@ -33,3 +33,8 @@ vim.keymap.set('i', '<D-/>', '<C-o>gcc', { desc = 'Toggle comment line', remap =
 vim.keymap.set('n', '<D-s>', '<cmd>w<cr>', { desc = 'Save file' })
 vim.keymap.set('i', '<D-s>', '<C-o><cmd>w<cr>', { desc = 'Save file' })
 vim.keymap.set('v', '<D-s>', '<C-c><cmd>w<cr>', { desc = 'Save file' })
+
+-- Terminal
+vim.keymap.set('n', '<leader>T', function()
+  vim.cmd 'botright 10split | terminal'
+end, { desc = 'Open [T]erminal' })
