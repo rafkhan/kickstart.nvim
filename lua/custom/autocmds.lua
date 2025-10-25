@@ -22,5 +22,3 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.bo.shiftwidth = 2
   end,
 })
-
--- Add more autocommands here as needed

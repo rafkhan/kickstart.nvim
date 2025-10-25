@@ -361,7 +361,10 @@ require('lazy').setup({
         { '<leader>f', group = '[F]ile/Find' },
         { '<leader>b', group = '[B]uffer' },
         { '<leader>g', group = '[G]it' },
+        { '<leader>gh', group = '[G]it [H]istory' },
+        { '<leader>go', group = '[G]it [O]pen' },
         { '<leader>r', group = 'Misc' },
+        { '<leader>R', group = 'Snacks' },
 
         -- Custom keybindings from lua/custom/keybindings.lua
         { '<leader>T', desc = 'Open [T]erminal' },
@@ -372,6 +375,11 @@ require('lazy').setup({
         -- Oil plugin keybindings
         { '<leader>-', desc = 'Open parent directory (floating)' },
         { '-', desc = 'Open parent directory' },
+
+        -- Snacks plugin keybindings
+        { '<leader>Rt', desc = 'Terminal' },
+        { '<leader>Ri', desc = 'Indent Guides' },
+        { '<leader>Rs', desc = 'Smooth Scroll Toggle' },
       },
     },
   },
@@ -702,6 +710,7 @@ require('lazy').setup({
         -- gopls = {},
         pyright = {},
         rust_analyzer = {},
+        eslint = {},  -- Added eslint LSP
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
