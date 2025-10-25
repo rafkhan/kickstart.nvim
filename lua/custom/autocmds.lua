@@ -24,4 +24,3 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 -- Add more autocommands here as needed
-
