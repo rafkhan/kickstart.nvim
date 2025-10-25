@@ -49,16 +49,7 @@ W:.*@@@@@@@     @@@@@##*       -#WW:   +-,     -   ;+@@@@@@        #+@   W*@@@@@
 @@@@@@@@@@@@@@*        W@@@@@@@@@@#    +@@@@@@.   @@@@*   #@@@@@@@@@    W@@@@        +@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@=-@@      @@@@@@@@@@@@W;   :W@@@   W@@@@@@:  @@@@@@W;  ,+@@@@@      @@+-@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@W;#-;   =W@@@@@@@@@@W@@*=W@W  @@@@@@@@@@..+W@@@*W@@@@@W=   .-+=+@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@,@@@@#**+*W@@@@@@#W@@@@@@W:+@W@@@@@@@@@@@@#@@-@@@@@W*+**#@@@@;@@@@@@W@@@@@@@@@@@@
-@@@@@@@@@@@@@@*@W@@ +@+@@*#*-@@@:#@@;;@@@@=W@@#:W-*@@@-+@@##@#@@;@@@@@@@@@@;:+@@@+-W@@@ =@@@@@@@@@@@
-@@@@@@@@@@@@= :+  :- #;W+ ; ;@W+      ++:   @@  =       #  W, #W:, *    ;          ;     :@@@@@@@@@@
-@@@@@@@@@@@          ,       =@;           :,,     ,=          *.  ,           -     ;*   @@@@@@@@@@
-@@@@@@@@@@#    -;.#           ,   =                  =@     *,-    W@=    ,     :=       -@@@@@@@@@@
-@@@@@@@@@@@=;;     *-   =,  *    #@,   @=   W-  ;  -,=** =         ::   @=+   :.=*:     :-@@@@@@@@@@
-@@@@@@@@@@W        +   ,##* :@=  ;@@:  @@:  @W  @  .  *            .    ;  W  ,  +        @@@@@@@@@@
-@@@@@@@@@@#;  - +@@ ; ;@@@@=;@*:; #@  :@@#; @@-.@@    -;  ; ;W@@  ,-     ,#@@    =   +@+  *@@@@@@@@@
-@@@@@@@@@@@+=#@W@@-W=W@@@@@@W@-@@+@@;#@@@@@:@@W+@@#:#@@@.#@W@@@@;*#,=@W@@@@@@W;*@@ *#@@@@W=@@@@@@@@@
-@@@@@@@@@@@@+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@+@@@@@@@+@@@@@@@@@@@@@@@@@:@@@@@@@@@@@@@@@@@]],
+@@@@@@@@@@@@@@@@@@@,@@@@#**+*W@@@@@@#W@@@@@@W:+@W@@@@@@@@@@@@#@@-@@@@@W*+**#@@@@;@@@@@@W@@@@@@@@@@@@]],
       },
       sections = {
         { section = 'header' },
@@ -77,14 +68,57 @@ W:.*@@@@@@@     @@@@@##*       -#WW:   +-,     -   ;+@@@@@@        #+@   W*@@@@@
   },
   keys = {
     -- Lazygit
-    { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
-    { '<leader>gl', function() Snacks.lazygit.log() end, desc = 'Lazygit Log' },
-    { '<leader>gL', function() Snacks.lazygit.log_file() end, desc = 'Lazygit Log (File)' },
+    {
+      '<leader>gg',
+      function()
+        Snacks.lazygit()
+      end,
+      desc = 'Lazygit',
+    },
+    {
+      '<leader>gl',
+      function()
+        Snacks.lazygit.log()
+      end,
+      desc = 'Lazygit Log',
+    },
+    {
+      '<leader>gL',
+      function()
+        Snacks.lazygit.log_file()
+      end,
+      desc = 'Lazygit Log (File)',
+    },
     -- Git
-    { '<leader>ghb', function() Snacks.git.blame_line() end, desc = 'Git Blame Line' },
-    { '<leader>gob', function() Snacks.gitbrowse() end, desc = 'Git Browse', mode = { 'n', 'v' } },
+    {
+      '<leader>ghb',
+      function()
+        Snacks.git.blame_line()
+      end,
+      desc = 'Git Blame Line',
+    },
+    {
+      '<leader>gob',
+      function()
+        Snacks.gitbrowse()
+      end,
+      desc = 'Git Browse',
+      mode = { 'n', 'v' },
+    },
     -- Terminal
-    { '<leader>rt', function() Snacks.terminal() end, desc = 'Toggle Terminal' },
-    { '<C-/>', function() Snacks.terminal() end, desc = 'Toggle Terminal' },
+    {
+      '<leader>rt',
+      function()
+        Snacks.terminal()
+      end,
+      desc = 'Toggle Terminal',
+    },
+    {
+      '<C-/>',
+      function()
+        Snacks.terminal()
+      end,
+      desc = 'Toggle Terminal',
+    },
   },
 }
