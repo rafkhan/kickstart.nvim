@@ -440,12 +440,25 @@ require('lazy').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
-        -- pickers = {}
+        defaults = {
+          mappings = {
+            i = {
+              ['<c-enter>'] = 'select_vertical', -- Control+Enter opens in vertical split
+            },
+          },
+        },
+        pickers = {
+          live_grep = {
+            additional_args = function()
+              return { '--fixed-strings' } -- Use plain string search instead of regex
+            end,
+          },
+          grep_string = {
+            additional_args = function()
+              return { '--fixed-strings' } -- Use plain string search instead of regex
+            end,
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -946,6 +959,7 @@ require('lazy').setup({
         customize = nil, -- customize the theme in any way you desire, see below what this
         -- configuration accepts
       }
+      vim.cmd.colorscheme 'gruvbox-material'
     end,
   },
 

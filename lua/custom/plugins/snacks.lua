@@ -59,7 +59,22 @@ W:.*@@@@@@@     @@@@@##*       -#WW:   +-,     -   ;+@@@@@@        #+@   W*@@@@@
     lazygit = { enabled = true },
     git = { enabled = true },
     gitbrowse = { enabled = true },
-    terminal = { enabled = true },
+    terminal = {
+      enabled = true,
+      win = {
+        position = 'bottom',
+        height = 0.4, -- 40% of screen height
+        border = 'rounded',
+        title = ' Terminal ',
+        title_pos = 'center',
+        footer = ' Press <C-/> or <leader>rt to toggle ',
+        footer_pos = 'center',
+        wo = {
+          winblend = 0,
+          winhighlight = 'Normal:Normal,FloatBorder:FloatBorder',
+        },
+      },
+    },
     indent = { enabled = true },
     animate = { enabled = true },
     scroll = { enabled = true },
