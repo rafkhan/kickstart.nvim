@@ -56,7 +56,15 @@ W:.*@@@@@@@     @@@@@##*       -#WW:   +-,     -   ;+@@@@@@        #+@   W*@@@@@
         { section = 'startup' },
       },
     },
-    lazygit = { enabled = true },
+    lazygit = {
+      enabled = true,
+      win = {
+        position = 'float',
+        width = 0.9,  -- 90% of screen width
+        height = 0.9, -- 90% of screen height
+        border = 'rounded',
+      },
+    },
     git = { enabled = true },
     gitbrowse = { enabled = true },
     terminal = {
