@@ -165,8 +165,8 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
-vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-vim.o.foldexpr = 'expr'
+-- Folding configuration is handled by nvim-ufo plugin
+-- See lua/custom/plugins/ufo.lua
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -360,17 +360,17 @@ require('lazy').setup({
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { '<leader>f', group = '[F]ile/Find' },
         { '<leader>b', group = '[B]uffer' },
+        { '<leader>bs', group = 'Sort' },
         { '<leader>g', group = '[G]it' },
         { '<leader>gh', group = '[G]it [H]istory' },
         { '<leader>go', group = '[G]it [O]pen' },
         { '<leader>r', group = 'Misc' },
         { '<leader>R', group = 'Snacks' },
+        { '<leader>a', group = '[A]I/Claude' },
 
         -- Custom keybindings from lua/custom/keybindings.lua
         { '<leader>T', desc = 'Open [T]erminal' },
         { '<leader>rp', desc = 'Copy file [p]ath' },
-        { '<leader>x', desc = 'Cut to clipboard' },
-        { '<leader>xx', desc = 'Cut entire line to clipboard' },
 
         -- Oil plugin keybindings
         { '<leader>-', desc = 'Open parent directory (floating)' },

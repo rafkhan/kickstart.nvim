@@ -19,11 +19,6 @@ vim.keymap.set('v', 'x', '"_x', { desc = 'Delete selection to blackhole register
 -- Paste over text without copying to register
 vim.keymap.set('v', 'p', '"_dP', { desc = 'Paste over without copying' })
 
--- Cut commands that copy to clipboard (supports movements)
-vim.keymap.set('n', '<leader>x', '"+d', { desc = 'Cut to clipboard' })
-vim.keymap.set('v', '<leader>x', '"+d', { desc = 'Cut to clipboard' })
-vim.keymap.set('n', '<leader>xx', '"+dd', { desc = 'Cut entire line to clipboard' })
-
 -- Comment toggle with Cmd+/ (D-/)
 vim.keymap.set('n', '<D-/>', 'gcc', { desc = 'Toggle comment line', remap = true })
 vim.keymap.set('v', '<D-/>', 'gc', { desc = 'Toggle comment selection', remap = true })
@@ -38,3 +33,42 @@ vim.keymap.set('v', '<D-s>', '<C-c><cmd>w<cr>', { desc = 'Save file' })
 vim.keymap.set('n', '<leader>T', function()
   vim.cmd 'botright 10split | terminal'
 end, { desc = 'Open [T]erminal' })
+
+-- Buffer management (barbar)
+-- Navigation
+vim.keymap.set('n', '<leader>bp', '<Cmd>BufferPrevious<CR>', { desc = 'Previous' })
+vim.keymap.set('n', '<leader>bn', '<Cmd>BufferNext<CR>', { desc = 'Next' })
+vim.keymap.set('n', '<leader>bb', '<Cmd>BufferPick<CR>', { desc = 'Pick Buffer' })
+vim.keymap.set('n', '<leader>b1', '<Cmd>BufferGoto 1<CR>', { desc = 'Go to 1' })
+vim.keymap.set('n', '<leader>b2', '<Cmd>BufferGoto 2<CR>', { desc = 'Go to 2' })
+vim.keymap.set('n', '<leader>b3', '<Cmd>BufferGoto 3<CR>', { desc = 'Go to 3' })
+vim.keymap.set('n', '<leader>b4', '<Cmd>BufferGoto 4<CR>', { desc = 'Go to 4' })
+vim.keymap.set('n', '<leader>b5', '<Cmd>BufferGoto 5<CR>', { desc = 'Go to 5' })
+vim.keymap.set('n', '<leader>b6', '<Cmd>BufferGoto 6<CR>', { desc = 'Go to 6' })
+vim.keymap.set('n', '<leader>b7', '<Cmd>BufferGoto 7<CR>', { desc = 'Go to 7' })
+vim.keymap.set('n', '<leader>b8', '<Cmd>BufferGoto 8<CR>', { desc = 'Go to 8' })
+vim.keymap.set('n', '<leader>b9', '<Cmd>BufferGoto 9<CR>', { desc = 'Go to 9' })
+vim.keymap.set('n', '<leader>b0', '<Cmd>BufferLast<CR>', { desc = 'Last' })
+
+-- Reordering
+vim.keymap.set('n', '<leader>b<', '<Cmd>BufferMovePrevious<CR>', { desc = 'Move Left' })
+vim.keymap.set('n', '<leader>b>', '<Cmd>BufferMoveNext<CR>', { desc = 'Move Right' })
+
+-- Closing buffers
+vim.keymap.set('n', '<leader>bc', '<Cmd>BufferClose<CR>', { desc = 'Close' })
+vim.keymap.set('n', '<leader>bC', '<Cmd>BufferClose!<CR>', { desc = 'Close (Force)' })
+vim.keymap.set('n', '<leader>bd', '<Cmd>BufferClose<CR>', { desc = 'Delete' })
+vim.keymap.set('n', '<leader>bD', '<Cmd>BufferClose!<CR>', { desc = 'Delete (Force)' })
+vim.keymap.set('n', '<leader>bo', '<Cmd>BufferCloseAllButCurrent<CR>', { desc = 'Close All But Current' })
+vim.keymap.set('n', '<leader>bO', '<Cmd>BufferCloseAllButPinned<CR>', { desc = 'Close All But Pinned' })
+vim.keymap.set('n', '<leader>bl', '<Cmd>BufferCloseBuffersLeft<CR>', { desc = 'Close All Left' })
+vim.keymap.set('n', '<leader>br', '<Cmd>BufferCloseBuffersRight<CR>', { desc = 'Close All Right' })
+
+-- Pinning
+vim.keymap.set('n', '<leader>bP', '<Cmd>BufferPin<CR>', { desc = 'Pin/Unpin' })
+
+-- Sorting
+vim.keymap.set('n', '<leader>bse', '<Cmd>BufferOrderByBufferNumber<CR>', { desc = 'By Number' })
+vim.keymap.set('n', '<leader>bsd', '<Cmd>BufferOrderByDirectory<CR>', { desc = 'By Directory' })
+vim.keymap.set('n', '<leader>bsl', '<Cmd>BufferOrderByLanguage<CR>', { desc = 'By Language' })
+vim.keymap.set('n', '<leader>bsw', '<Cmd>BufferOrderByWindowNumber<CR>', { desc = 'By Window' })
