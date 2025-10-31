@@ -7,14 +7,14 @@ vim.api.nvim_set_keymap('n', 'grE', '<cmd>lua vim.diagnostic.goto_prev()<CR>', {
 vim.api.nvim_set_keymap('n', 'gre', '<cmd>lua vim.diagnostic.goto_next()<CR>', { noremap = true, silent = true })
 
 -- Blackhole register keybindings
-vim.keymap.set('n', 'd', '"_d', { desc = 'Delete to blackhole register' })
-vim.keymap.set('v', 'd', '"_d', { desc = 'Delete to blackhole register' })
-vim.keymap.set('n', 'D', '"_D', { desc = 'Delete line to blackhole register' })
-vim.keymap.set('n', 'c', '"_c', { desc = 'Change to blackhole register' })
-vim.keymap.set('v', 'c', '"_c', { desc = 'Change to blackhole register' })
-vim.keymap.set('n', 'C', '"_C', { desc = 'Change line to blackhole register' })
+-- vim.keymap.set('n', 'd', '"_d', { desc = 'Delete to blackhole register' })
+-- vim.keymap.set('v', 'd', '"_d', { desc = 'Delete to blackhole register' })
+-- vim.keymap.set('n', 'D', '"_D', { desc = 'Delete line to blackhole register' })
+-- vim.keymap.set('n', 'c', '"_c', { desc = 'Change to blackhole register' })
+-- vim.keymap.set('v', 'c', '"_c', { desc = 'Change to blackhole register' })
+-- vim.keymap.set('n', 'C', '"_C', { desc = 'Change line to blackhole register' })
 -- Note: keeping X as normal delete backwards, using leader for cut line
-vim.keymap.set('v', 'x', '"_x', { desc = 'Delete selection to blackhole register' })
+-- vim.keymap.set('v', 'x', '"_x', { desc = 'Delete selection to blackhole register' })
 
 -- Paste over text without copying to register
 vim.keymap.set('v', 'p', '"_dP', { desc = 'Paste over without copying' })
@@ -36,23 +36,23 @@ end, { desc = 'Open [T]erminal' })
 
 -- Buffer management (barbar)
 -- Navigation
-vim.keymap.set('n', '<leader>bp', '<Cmd>BufferPrevious<CR>', { desc = 'Previous' })
-vim.keymap.set('n', '<leader>bn', '<Cmd>BufferNext<CR>', { desc = 'Next' })
-vim.keymap.set('n', '<leader>bb', '<Cmd>BufferPick<CR>', { desc = 'Pick Buffer' })
-vim.keymap.set('n', '<leader>b1', '<Cmd>BufferGoto 1<CR>', { desc = 'Go to 1' })
-vim.keymap.set('n', '<leader>b2', '<Cmd>BufferGoto 2<CR>', { desc = 'Go to 2' })
-vim.keymap.set('n', '<leader>b3', '<Cmd>BufferGoto 3<CR>', { desc = 'Go to 3' })
-vim.keymap.set('n', '<leader>b4', '<Cmd>BufferGoto 4<CR>', { desc = 'Go to 4' })
-vim.keymap.set('n', '<leader>b5', '<Cmd>BufferGoto 5<CR>', { desc = 'Go to 5' })
-vim.keymap.set('n', '<leader>b6', '<Cmd>BufferGoto 6<CR>', { desc = 'Go to 6' })
-vim.keymap.set('n', '<leader>b7', '<Cmd>BufferGoto 7<CR>', { desc = 'Go to 7' })
-vim.keymap.set('n', '<leader>b8', '<Cmd>BufferGoto 8<CR>', { desc = 'Go to 8' })
-vim.keymap.set('n', '<leader>b9', '<Cmd>BufferGoto 9<CR>', { desc = 'Go to 9' })
-vim.keymap.set('n', '<leader>b0', '<Cmd>BufferLast<CR>', { desc = 'Last' })
+-- vim.keymap.set('n', '<leader>bp', '<Cmd>BufferPrevious<CR>', { desc = 'Previous' })
+-- vim.keymap.set('n', '<leader>bn', '<Cmd>BufferNext<CR>', { desc = 'Next' })
+-- vim.keymap.set('n', '<leader>bb', '<Cmd>BufferPick<CR>', { desc = 'Pick Buffer' })
+-- vim.keymap.set('n', '<leader>b1', '<Cmd>BufferGoto 1<CR>', { desc = 'Go to 1' })
+-- vim.keymap.set('n', '<leader>b2', '<Cmd>BufferGoto 2<CR>', { desc = 'Go to 2' })
+-- vim.keymap.set('n', '<leader>b3', '<Cmd>BufferGoto 3<CR>', { desc = 'Go to 3' })
+-- vim.keymap.set('n', '<leader>b4', '<Cmd>BufferGoto 4<CR>', { desc = 'Go to 4' })
+-- vim.keymap.set('n', '<leader>b5', '<Cmd>BufferGoto 5<CR>', { desc = 'Go to 5' })
+-- vim.keymap.set('n', '<leader>b6', '<Cmd>BufferGoto 6<CR>', { desc = 'Go to 6' })
+-- vim.keymap.set('n', '<leader>b7', '<Cmd>BufferGoto 7<CR>', { desc = 'Go to 7' })
+-- vim.keymap.set('n', '<leader>b8', '<Cmd>BufferGoto 8<CR>', { desc = 'Go to 8' })
+-- vim.keymap.set('n', '<leader>b9', '<Cmd>BufferGoto 9<CR>', { desc = 'Go to 9' })
+-- vim.keymap.set('n', '<leader>b0', '<Cmd>BufferLast<CR>', { desc = 'Last' })
 
 -- Reordering
-vim.keymap.set('n', '<leader>b<', '<Cmd>BufferMovePrevious<CR>', { desc = 'Move Left' })
-vim.keymap.set('n', '<leader>b>', '<Cmd>BufferMoveNext<CR>', { desc = 'Move Right' })
+-- vim.keymap.set('n', '<leader>b<', '<Cmd>BufferMovePrevious<CR>', { desc = 'Move Left' })
+-- vim.keymap.set('n', '<leader>b>', '<Cmd>BufferMoveNext<CR>', { desc = 'Move Right' })
 
 -- Closing buffers
 vim.keymap.set('n', '<leader>bc', '<Cmd>BufferClose<CR>', { desc = 'Close' })
