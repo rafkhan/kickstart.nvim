@@ -12,7 +12,44 @@ return {
   },
   opts = {},
   config = function()
-    require('spectre').setup()
+    require('spectre').setup({
+      mapping = {
+        ['toggle_fixed_strings'] = {
+          map = 'tf',
+          cmd = "<cmd>lua require('spectre').change_options('fixed-strings')<CR>",
+          desc = 'toggle fixed strings (literal search)',
+        },
+      },
+      find_engine = {
+        ['rg'] = {
+          cmd = 'rg',
+          args = {
+            '--color=never',
+            '--no-heading',
+            '--with-filename',
+            '--line-number',
+            '--column',
+          },
+          options = {
+            ['ignore-case'] = {
+              value = '--ignore-case',
+              icon = '[I]',
+              desc = 'ignore case',
+            },
+            ['hidden'] = {
+              value = '--hidden',
+              icon = '[H]',
+              desc = 'hidden file',
+            },
+            ['fixed-strings'] = {
+              value = '--fixed-strings',
+              icon = '[F]',
+              desc = 'fixed strings (literal search)',
+            },
+          },
+        },
+      },
+    })
 
     -- Add which-key group for Spectre
     if package.loaded['which-key'] then

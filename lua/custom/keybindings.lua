@@ -3,18 +3,17 @@ vim.keymap.set('n', '<leader>rp', function()
   vim.fn.setreg('+', vim.fn.expand '%:p:.')
 end, { desc = 'Copy file [p]ath' })
 
+-- Tab management
+vim.keymap.set('n', '<leader>X', '<cmd>tabclose<cr>', { desc = 'Close tab' })
+
 vim.api.nvim_set_keymap('n', 'grE', '<cmd>lua vim.diagnostic.goto_prev()<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', 'gre', '<cmd>lua vim.diagnostic.goto_next()<CR>', { noremap = true, silent = true })
 
 -- Blackhole register keybindings
--- vim.keymap.set('n', 'd', '"_d', { desc = 'Delete to blackhole register' })
--- vim.keymap.set('v', 'd', '"_d', { desc = 'Delete to blackhole register' })
--- vim.keymap.set('n', 'D', '"_D', { desc = 'Delete line to blackhole register' })
--- vim.keymap.set('n', 'c', '"_c', { desc = 'Change to blackhole register' })
--- vim.keymap.set('v', 'c', '"_c', { desc = 'Change to blackhole register' })
--- vim.keymap.set('n', 'C', '"_C', { desc = 'Change line to blackhole register' })
--- Note: keeping X as normal delete backwards, using leader for cut line
--- vim.keymap.set('v', 'x', '"_x', { desc = 'Delete selection to blackhole register' })
+-- d deletes without copying (blackhole register)
+vim.keymap.set('n', 'd', '"_d', { desc = 'Delete to blackhole register' })
+vim.keymap.set('v', 'd', '"_d', { desc = 'Delete to blackhole register' })
+vim.keymap.set('n', 'D', '"_D', { desc = 'Delete line to blackhole register' })
 
 -- Paste over text without copying to register
 vim.keymap.set('v', 'p', '"_dP', { desc = 'Paste over without copying' })

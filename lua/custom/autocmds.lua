@@ -9,6 +9,16 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'cpp', 'c' },
+  callback = function()
+    vim.bo.tabstop = 2
+    vim.bo.shiftwidth = 2
+    vim.bo.softtabstop = 2
+    vim.bo.expandtab = true
+  end,
+})
+
 -- Open dashboard when last buffer is deleted
 vim.api.nvim_create_autocmd('BufDelete', {
   group = vim.api.nvim_create_augroup('dashboard-on-empty', { clear = true }),

@@ -2,13 +2,13 @@ return {
   "coder/claudecode.nvim",
   dependencies = { "folke/snacks.nvim" },
   opts = {
-    -- Terminal configuration with floating window
+    -- Terminal configuration with side window
     terminal = {
       provider = "snacks",
       snacks_win_opts = {
-        position = "float",
-        width = 0.9,
-        height = 0.9,
+        position = "right",
+        width = 0.4,  -- 40% of screen width
+        height = 1,   -- Full height
         border = "rounded",
         wo = {
           winblend = 0,  -- No transparency
