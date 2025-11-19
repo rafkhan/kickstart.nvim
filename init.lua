@@ -962,7 +962,7 @@ require('lazy').setup({
         customize = nil, -- customize the theme in any way you desire, see below what this
         -- configuration accepts
       }
-      vim.cmd.colorscheme 'gruvbox-material'
+      -- vim.cmd.colorscheme 'gruvbox-material'
     end,
   },
 

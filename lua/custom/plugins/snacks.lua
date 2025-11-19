@@ -60,7 +60,7 @@ W:.*@@@@@@@     @@@@@##*       -#WW:   +-,     -   ;+@@@@@@        #+@   W*@@@@@
       enabled = true,
       win = {
         position = 'float',
-        width = 0.9,  -- 90% of screen width
+        width = 0.9, -- 90% of screen width
         height = 0.9, -- 90% of screen height
         border = 'rounded',
       },
@@ -83,7 +83,14 @@ W:.*@@@@@@@     @@@@@##*       -#WW:   +-,     -   ;+@@@@@@        #+@   W*@@@@@
         },
       },
     },
-    indent = { enabled = true },
+    indent = {
+      enabled = true,
+      char = '┊',
+      scope = {
+        enabled = true,
+        char = '┊',
+      },
+    },
     animate = { enabled = true },
     scroll = { enabled = true },
     toggle = { enabled = true },
