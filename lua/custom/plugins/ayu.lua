@@ -2,7 +2,7 @@ return {
   'Shatur/neovim-ayu',
   name = 'ayu',
   lazy = false,
-  priority = 1000,
+  priority = 1001, -- Higher priority than gruvbox-material to ensure it loads last
   config = function()
     require('ayu').setup {
       mirage = false, -- Set to `true` to use `mirage` variant instead of `dark` for dark background.
