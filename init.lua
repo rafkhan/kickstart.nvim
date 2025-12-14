@@ -442,6 +442,9 @@ require('lazy').setup({
         --  All the info you're looking for is in `:help telescope.setup()`
         --
         defaults = {
+          file_ignore_patterns = {
+            'bingo-packs',
+          },
           mappings = {
             i = {
               ['<c-enter>'] = 'select_vertical', -- Control+Enter opens in vertical split
@@ -724,7 +727,7 @@ require('lazy').setup({
         -- gopls = {},
         pyright = {},
         rust_analyzer = {},
-        eslint = {},  -- Added eslint LSP
+        eslint = {}, -- Added eslint LSP
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -930,7 +933,6 @@ require('lazy').setup({
       signature = { enabled = true },
     },
   },
-
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
