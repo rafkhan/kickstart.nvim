@@ -372,6 +372,7 @@ require('lazy').setup({
         -- Custom keybindings from lua/custom/keybindings.lua
         { '<leader>T', desc = 'Open [T]erminal' },
         { '<leader>rp', desc = 'Copy file [p]ath' },
+        { '<leader>rP', desc = 'Copy absolute file [P]ath' },
 
         -- Oil plugin keybindings
         { '<leader>-', desc = 'Open parent directory (floating)' },
@@ -478,6 +479,12 @@ require('lazy').setup({
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+      vim.keymap.set('n', '<leader>G', function()
+        local ok = pcall(builtin.resume)
+        if not ok then
+          builtin.live_grep()
+        end
+      end, { desc = '[G]rep (resume)' })
       vim.keymap.set('n', '<leader>F', builtin.find_files, { desc = 'Find [F]iles' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
@@ -711,7 +718,26 @@ require('lazy').setup({
       local servers = {
         bashls = {},
         clangd = {},
-        -- gopls = {},
+        gopls = {
+          settings = {
+            gopls = {
+              analyses = {
+                unusedparams = true,
+                shadow = true,
+              },
+              staticcheck = true,
+              gofumpt = true,
+              hints = {
+                assignVariableTypes = true,
+                compositeLiteralFields = true,
+                constantValues = true,
+                functionTypeParameters = true,
+                parameterNames = true,
+                rangeVariableTypes = true,
+              },
+            },
+          },
+        },
         pyright = {},
         rust_analyzer = {},
         eslint = {}, -- Added eslint LSP
@@ -756,6 +782,8 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'goimports', -- Go import organization
+        'gofumpt', -- Stricter Go formatting
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -810,6 +838,7 @@ require('lazy').setup({
         lua = { 'stylua' },
         cpp = { 'clang-format' },
         c = { 'clang-format' },
+        go = { 'goimports', 'gofumpt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --

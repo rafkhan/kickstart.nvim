@@ -3,6 +3,10 @@ vim.keymap.set('n', '<leader>rp', function()
   vim.fn.setreg('+', vim.fn.expand '%:p:.')
 end, { desc = 'Copy file [p]ath' })
 
+vim.keymap.set('n', '<leader>rP', function()
+  vim.fn.setreg('+', vim.fn.expand '%:p')
+end, { desc = 'Copy absolute file [P]ath' })
+
 vim.api.nvim_set_keymap('n', 'grE', '<cmd>lua vim.diagnostic.goto_prev()<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', 'gre', '<cmd>lua vim.diagnostic.goto_next()<CR>', { noremap = true, silent = true })
 

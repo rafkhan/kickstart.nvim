@@ -52,6 +52,32 @@ return {
         ['gx'] = 'actions.open_external',
         ['g.'] = 'actions.toggle_hidden',
         ['g\\'] = 'actions.toggle_trash',
+        ['q'] = 'actions.close',
+        ['<leader>rp'] = {
+          callback = function()
+            local oil = require 'oil'
+            local entry = oil.get_cursor_entry()
+            if entry then
+              local path = oil.get_current_dir() .. entry.name
+              local rel = vim.fn.fnamemodify(path, ':.')
+              vim.fn.setreg('+', rel)
+              vim.notify(rel, vim.log.levels.INFO)
+            end
+          end,
+          desc = 'Copy relative file path',
+        },
+        ['<leader>rP'] = {
+          callback = function()
+            local oil = require 'oil'
+            local entry = oil.get_cursor_entry()
+            if entry then
+              local path = oil.get_current_dir() .. entry.name
+              vim.fn.setreg('+', path)
+              vim.notify(path, vim.log.levels.INFO)
+            end
+          end,
+          desc = 'Copy absolute file path',
+        },
       },
       -- Set to false to disable all of the above keymaps
       use_default_keymaps = true,
