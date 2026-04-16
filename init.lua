@@ -358,7 +358,6 @@ require('lazy').setup({
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
-        { '<leader>f', group = '[F]ile/Find' },
         { '<leader>b', group = '[B]uffer' },
         { '<leader>bs', group = 'Sort' },
         { '<leader>g', group = '[G]it' },
@@ -814,7 +813,7 @@ require('lazy').setup({
         function()
           require('conform').format { async = true, lsp_format = 'fallback' }
         end,
-        mode = '',
+        mode = { 'n', 'v' },
         desc = '[F]ormat buffer',
       },
     },
@@ -1021,21 +1020,19 @@ require('lazy').setup({
     cmd = 'Neotree',
     keys = {
       {
-        '<leader>fe',
+        '<leader>e',
         function()
           require('neo-tree.command').execute { toggle = true }
         end,
         desc = 'Explorer NeoTree (Root Dir)',
       },
       {
-        '<leader>fE',
+        '<leader>E',
         function()
           require('neo-tree.command').execute { toggle = true, dir = vim.uv.cwd() }
         end,
         desc = 'Explorer NeoTree (cwd)',
       },
-      { '<leader>e', '<leader>fe', desc = 'Explorer NeoTree (Root Dir)', remap = true },
-      { '<leader>E', '<leader>fE', desc = 'Explorer NeoTree (cwd)', remap = true },
       {
         '<leader>ge',
         function()
