@@ -5,7 +5,27 @@ return {
   ---@type snacks.Config
   opts = {
     bigfile = { enabled = true },
-    picker = { enabled = false },
+    picker = {
+      enabled = true,
+      layout = {
+        preset = 'sidebar',
+        preview = 'main',
+      },
+      sources = {
+        files = { hidden = true },
+      },
+      jump = {
+        close = false, -- keep sidebar open after opening a file
+      },
+      auto_close = false, -- don't close when focus moves to editor
+      win = {
+        list = {
+          keys = {
+            ['q'] = 'close',
+          },
+        },
+      },
+    },
     dashboard = {
       enabled = true,
       width = 60,
