@@ -7,10 +7,28 @@ return {
     bigfile = { enabled = true },
     picker = {
       enabled = true,
-      layout = {
-        preset = 'sidebar',
-        preview = 'main',
+      -- NOTE: single-sidebar enforcement lives at the keymap layer in init.lua
+      -- (close-others-then-open). Using picker.on_show for this corrupts vim's
+      -- split layout because it fires AFTER the new picker has created its windows.
+      -- Custom sidebar layout: input + list only, no preview block.
+      -- This OVERRIDES the built-in `sidebar` preset, so even sources that hard-code
+      -- `preset = "sidebar"` (like explorer) get the same clean layout with no empty preview slot.
+      layouts = {
+        sidebar = {
+          layout = {
+            backdrop = false,
+            width = 40,
+            min_width = 40,
+            height = 0,
+            position = 'left',
+            border = 'none',
+            box = 'vertical',
+            { win = 'input', height = 1, border = true, title = '{title} {live} {flags}', title_pos = 'center' },
+            { win = 'list', border = 'none' },
+          },
+        },
       },
+      layout = { preset = 'sidebar' },
       sources = {
         files = { hidden = true },
       },

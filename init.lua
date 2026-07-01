@@ -474,34 +474,56 @@ require('lazy').setup({
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
 
-      -- Pickers powered by Snacks (sidebar layout). Telescope stays available via :Telescope.
+      -- Pickers powered by Snacks. All share ONE sidebar so file explorer / search / grep
+      -- swap content in a single VSCode-style left panel.
+      -- Telescope stays available via :Telescope.
+      --
+      -- IMPORTANT: closing the old picker must happen BEFORE the new picker creates its
+      -- split (doing it from picker.on_show corrupts the split layout — nvim collapses
+      -- to half-height because the close runs while the new split is being built).
+      local function close_others(keep_source)
+        for _, p in ipairs(Snacks.picker.get()) do
+          if not keep_source or p.opts.source ~= keep_source then
+            p:close()
+          end
+        end
+      end
       local function focus_or_open(source, open_fn)
         local pickers = Snacks.picker.get({ source = source })
         if #pickers > 0 then
-          pickers[1]:focus('input', { show = true })
-        else
+          pickers[1]:focus() -- already open in the sidebar: just focus it
+          return
+        end
+        close_others() -- swap content of the one sidebar
+        open_fn()
+      end
+      -- For pickers that don't need focus-if-open semantics, just close-then-open.
+      local function pick(open_fn)
+        return function()
+          close_others()
           open_fn()
         end
       end
+      -- File explorer + git/buffer views live in the same sidebar as search
+      vim.keymap.set('n', '<leader>e', function() focus_or_open('explorer', function() Snacks.explorer() end) end, { desc = '[E]xplorer (sidebar)' })
+      vim.keymap.set('n', '<leader>E', pick(function() Snacks.explorer { cwd = vim.uv.cwd() } end), { desc = '[E]xplorer (cwd)' })
+      vim.keymap.set('n', '<leader>ge', function() focus_or_open('git_status', Snacks.picker.git_status) end, { desc = 'Git Explorer (status)' })
+      vim.keymap.set('n', '<leader>be', function() focus_or_open('buffers', Snacks.picker.buffers) end, { desc = '[B]uffer Explorer' })
       vim.keymap.set('n', '<leader>sf', function() focus_or_open('files', Snacks.picker.files) end, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>F', function() focus_or_open('files', Snacks.picker.files) end, { desc = 'Find [F]iles' })
       vim.keymap.set('n', '<leader>sg', function() focus_or_open('grep', Snacks.picker.grep) end, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>G', function() focus_or_open('grep', Snacks.picker.grep) end, { desc = '[G]rep (focus or open)' })
-      vim.keymap.set('n', '<leader>sw', function() Snacks.picker.grep_word() end, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sh', function() Snacks.picker.help() end, { desc = '[S]earch [H]elp' })
-      vim.keymap.set('n', '<leader>sk', function() Snacks.picker.keymaps() end, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>s.', function() Snacks.picker.recent() end, { desc = '[S]earch Recent Files' })
-      vim.keymap.set('n', '<leader>sr', function() Snacks.picker.resume() end, { desc = '[S]earch [R]esume' })
-      vim.keymap.set('n', '<leader>sd', function() Snacks.picker.diagnostics() end, { desc = '[S]earch [D]iagnostics' })
-      vim.keymap.set('n', '<leader><leader>', function() Snacks.picker.buffers() end, { desc = '[ ] Find existing buffers' })
-      vim.keymap.set('n', '<leader>/', function() Snacks.picker.lines() end, { desc = '[/] Fuzzily search in current buffer' })
-      vim.keymap.set('n', '<leader>sn', function()
-        Snacks.picker.files { cwd = vim.fn.stdpath 'config' }
-      end, { desc = '[S]earch [N]eovim files' })
-      vim.keymap.set('n', '<leader>ss', function() Snacks.picker.pickers() end, { desc = '[S]earch [S]elect Picker' })
-      vim.keymap.set('n', '<leader>s/', function()
-        Snacks.picker.grep_buffers()
-      end, { desc = '[S]earch [/] in Open Files' })
+      vim.keymap.set('n', '<leader>sw', pick(Snacks.picker.grep_word), { desc = '[S]earch current [W]ord' })
+      vim.keymap.set('n', '<leader>sh', pick(Snacks.picker.help), { desc = '[S]earch [H]elp' })
+      vim.keymap.set('n', '<leader>sk', pick(Snacks.picker.keymaps), { desc = '[S]earch [K]eymaps' })
+      vim.keymap.set('n', '<leader>s.', pick(Snacks.picker.recent), { desc = '[S]earch Recent Files' })
+      vim.keymap.set('n', '<leader>sr', pick(Snacks.picker.resume), { desc = '[S]earch [R]esume' })
+      vim.keymap.set('n', '<leader>sd', pick(Snacks.picker.diagnostics), { desc = '[S]earch [D]iagnostics' })
+      vim.keymap.set('n', '<leader><leader>', pick(Snacks.picker.buffers), { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>/', pick(Snacks.picker.lines), { desc = '[/] Fuzzily search in current buffer' })
+      vim.keymap.set('n', '<leader>sn', pick(function() Snacks.picker.files { cwd = vim.fn.stdpath 'config' } end), { desc = '[S]earch [N]eovim files' })
+      vim.keymap.set('n', '<leader>ss', pick(Snacks.picker.pickers), { desc = '[S]earch [S]elect Picker' })
+      vim.keymap.set('n', '<leader>s/', pick(Snacks.picker.grep_buffers), { desc = '[S]earch [/] in Open Files' })
     end,
   },
 
@@ -738,7 +760,14 @@ require('lazy').setup({
         },
         pyright = {},
         rust_analyzer = {},
-        eslint = {}, -- Added eslint LSP
+        eslint = {
+          settings = {
+            -- Auto-detect the right working directory per file instead of
+            -- pinning to the first-detected root. Needed for monorepos
+            -- with many sub-projects that each have their own ESLint config.
+            workingDirectories = { mode = 'auto' },
+          },
+        }, -- Added eslint LSP
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -782,6 +811,7 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'goimports', -- Go import organization
         'gofumpt', -- Stricter Go formatting
+        'eslint_d', -- Used to format/fix JS/TS via ESLint
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -823,12 +853,22 @@ require('lazy').setup({
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
         local disable_filetypes = {}
-        if disable_filetypes[vim.bo[bufnr].filetype] then
+        -- These are only formatted via ESLint (see formatters_by_ft below).
+        -- Skip the LSP fallback so ts_ls doesn't silently reformat a
+        -- buffer when the project has no ESLint config.
+        local eslint_only_filetypes = {
+          javascript = true,
+          javascriptreact = true,
+          typescript = true,
+          typescriptreact = true,
+        }
+        local filetype = vim.bo[bufnr].filetype
+        if disable_filetypes[filetype] then
           return nil
         else
           return {
             timeout_ms = 500,
-            lsp_format = 'fallback',
+            lsp_format = eslint_only_filetypes[filetype] and 'never' or 'fallback',
           }
         end
       end,
@@ -837,11 +877,43 @@ require('lazy').setup({
         cpp = { 'clang-format' },
         c = { 'clang-format' },
         go = { 'goimports', 'gofumpt' },
+        -- Format with ESLint's autofixer only; the `eslint_d` condition
+        -- below skips formatting when the project has no ESLint config.
+        javascript = { 'eslint_d' },
+        javascriptreact = { 'eslint_d' },
+        typescript = { 'eslint_d' },
+        typescriptreact = { 'eslint_d' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
+      },
+      formatters = {
+        eslint_d = {
+          -- `vim.fs.root` walks upward from the buffer's own directory, so
+          -- in a monorepo each file resolves to its nearest sub-project's
+          -- ESLint config (and that dir is used as eslint_d's cwd) rather
+          -- than a top-level one. Returns nil (no formatting) if no
+          -- ESLint config is found anywhere above the file.
+          cwd = function(_, ctx)
+            return vim.fs.root(ctx.dirname, {
+              '.eslintrc',
+              '.eslintrc.js',
+              '.eslintrc.cjs',
+              '.eslintrc.yaml',
+              '.eslintrc.yml',
+              '.eslintrc.json',
+              'eslint.config.js',
+              'eslint.config.mjs',
+              'eslint.config.cjs',
+              'eslint.config.ts',
+            })
+          end,
+          condition = function(self, ctx)
+            return self.cwd(self, ctx) ~= nil
+          end,
+        },
       },
     },
   },
@@ -1017,36 +1089,8 @@ require('lazy').setup({
   {
     'nvim-neo-tree/neo-tree.nvim',
     cmd = 'Neotree',
-    keys = {
-      {
-        '<leader>e',
-        function()
-          require('neo-tree.command').execute { toggle = true }
-        end,
-        desc = 'Explorer NeoTree (Root Dir)',
-      },
-      {
-        '<leader>E',
-        function()
-          require('neo-tree.command').execute { toggle = true, dir = vim.uv.cwd() }
-        end,
-        desc = 'Explorer NeoTree (cwd)',
-      },
-      {
-        '<leader>ge',
-        function()
-          require('neo-tree.command').execute { source = 'git_status', toggle = true }
-        end,
-        desc = 'Git Explorer',
-      },
-      {
-        '<leader>be',
-        function()
-          require('neo-tree.command').execute { source = 'buffers', toggle = true }
-        end,
-        desc = 'Buffer Explorer',
-      },
-    },
+    -- Explorer/git/buffer keymaps moved to Snacks (single shared sidebar).
+    -- neo-tree stays installed and is still available via :Neotree.
     deactivate = function()
       vim.cmd [[Neotree close]]
     end,
