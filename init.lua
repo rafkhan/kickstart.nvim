@@ -481,11 +481,25 @@ require('lazy').setup({
       -- IMPORTANT: closing the old picker must happen BEFORE the new picker creates its
       -- split (doing it from picker.on_show corrupts the split layout — nvim collapses
       -- to half-height because the close runs while the new split is being built).
+      -- Teardown is also async (picker:close() only schedules the window destroy), so
+      -- when something was closed the replacement must open on the NEXT tick: opening
+      -- in the same tick puts two sidebars on screen and the resulting WinResized
+      -- fires into the half-destroyed picker (see the List.update guard below).
       local function close_others(keep_source)
+        local closed = false
         for _, p in ipairs(Snacks.picker.get()) do
           if not keep_source or p.opts.source ~= keep_source then
             p:close()
+            closed = true
           end
+        end
+        return closed
+      end
+      local function swap_to(open_fn)
+        if close_others() then
+          vim.schedule(open_fn) -- runs after the closed picker's scheduled teardown
+        else
+          open_fn()
         end
       end
       local function focus_or_open(source, open_fn)
@@ -494,15 +508,25 @@ require('lazy').setup({
           pickers[1]:focus() -- already open in the sidebar: just focus it
           return
         end
-        close_others() -- swap content of the one sidebar
-        open_fn()
+        swap_to(open_fn)
       end
       -- For pickers that don't need focus-if-open semantics, just close-then-open.
       local function pick(open_fn)
         return function()
-          close_others()
-          open_fn()
+          swap_to(open_fn)
         end
+      end
+
+      -- snacks.nvim race (still present in v2.31): a closing picker's list window can
+      -- receive WinResized before its deferred teardown deletes the autocmd, and the
+      -- re-render indexes the already-nil `picker` field (list.lua:581). No-op instead.
+      local List = require 'snacks.picker.core.list'
+      local list_update = List.update
+      function List:update(...)
+        if not self.picker then
+          return
+        end
+        return list_update(self, ...)
       end
       -- File explorer + git/buffer views live in the same sidebar as search
       vim.keymap.set('n', '<leader>e', function() focus_or_open('explorer', function() Snacks.explorer() end) end, { desc = '[E]xplorer (sidebar)' })
@@ -515,7 +539,9 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>G', function() focus_or_open('grep', Snacks.picker.grep) end, { desc = '[G]rep (focus or open)' })
       vim.keymap.set('n', '<leader>sw', pick(Snacks.picker.grep_word), { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sh', pick(Snacks.picker.help), { desc = '[S]earch [H]elp' })
-      vim.keymap.set('n', '<leader>sk', pick(Snacks.picker.keymaps), { desc = '[S]earch [K]eymaps' })
+      -- Keymaps open as a centered popup (see snacks.lua sources.keymaps), not
+      -- sidebar content — so no close_others/pick() here; the sidebar stays put.
+      vim.keymap.set('n', '<leader>sk', function() Snacks.picker.keymaps() end, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>s.', pick(Snacks.picker.recent), { desc = '[S]earch Recent Files' })
       vim.keymap.set('n', '<leader>sr', pick(Snacks.picker.resume), { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>sd', pick(Snacks.picker.diagnostics), { desc = '[S]earch [D]iagnostics' })

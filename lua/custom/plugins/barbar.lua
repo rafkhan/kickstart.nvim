@@ -23,8 +23,8 @@ return {
     local opts = { noremap = true, silent = true }
 
     -- Navigate between buffers
-    map('n', '<C-,>', '<Cmd>BufferPrevious<CR>', opts)
-    map('n', '<C-.>', '<Cmd>BufferNext<CR>', opts)
+    map('n', '[b', '<Cmd>BufferPrevious<CR>', vim.tbl_extend('force', opts, { desc = 'Previous buffer' }))
+    map('n', ']b', '<Cmd>BufferNext<CR>', vim.tbl_extend('force', opts, { desc = 'Next buffer' }))
 
     -- Close buffer
     map('n', '<C-c>', '<Cmd>BufferClose<CR>', opts)

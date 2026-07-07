@@ -31,6 +31,31 @@ return {
       layout = { preset = 'sidebar' },
       sources = {
         files = { hidden = true },
+        -- Keymaps are too wide for the 40-col sidebar: use a centered popup,
+        -- and close it on confirm/leave (the sidebar's keep-open behavior
+        -- doesn't make sense for a transient float). The key/description list
+        -- gets 70% of the width; the code preview only 30% (the `default`
+        -- preset's 50/50 split buries the descriptions).
+        keymaps = {
+          layout = {
+            layout = {
+              box = 'horizontal',
+              width = 0.9,
+              min_width = 120,
+              height = 0.8,
+              {
+                box = 'vertical',
+                border = true,
+                title = '{title} {live} {flags}',
+                { win = 'input', height = 1, border = 'bottom' },
+                { win = 'list', border = 'none' },
+              },
+              { win = 'preview', title = '{preview}', border = true, width = 0.3 },
+            },
+          },
+          jump = { close = true },
+          auto_close = true,
+        },
       },
       jump = {
         close = false, -- keep sidebar open after opening a file
