@@ -10,16 +10,19 @@ function M.name()
   return (vim.fn.getcwd():gsub('[\\/:]', '%%'))
 end
 
--- Restore the session for cwd if one exists, otherwise fall back to
--- mini.sessions' default (local Session.vim, else latest global session)
+-- Restore ONLY the session that belongs to the current directory.
+--
+-- Never fall back to mini.sessions' "latest" session (`read(nil)`): on a plain
+-- `nvim` in a directory without its own session, that would (1) load an
+-- unrelated project's files and (2) fire SessionLoadPost, which makes the
+-- snacks dashboard skip opening ("buffer has a name"). When cwd has no session,
+-- do nothing and let the dashboard (ASCII art) show.
 function M.restore()
   local sessions = require 'mini.sessions'
-  local name = sessions.detected[M.name()] ~= nil and M.name() or nil
-  if name == nil and vim.tbl_isempty(sessions.detected) then
-    vim.notify('No sessions found', vim.log.levels.INFO)
+  if sessions.detected[M.name()] == nil then
     return
   end
-  sessions.read(name)
+  sessions.read(M.name())
 end
 
 function M.save()
