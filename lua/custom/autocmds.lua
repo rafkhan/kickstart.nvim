@@ -67,3 +67,24 @@ vim.api.nvim_create_autocmd('User', {
     })
   end,
 })
+
+-- Session persistence (see lua/custom/session.lua for the mini.sessions
+-- wrapper). Restore the current directory's session on a plain `nvim` with
+-- no file/dir arguments and nothing piped into stdin; save it on exit.
+vim.api.nvim_create_autocmd('VimEnter', {
+  nested = true,
+  callback = function()
+    if vim.fn.argc() ~= 0 or vim.fn.line2byte '$' ~= -1 then
+      -- argc ~= 0: opened with file/dir args; line2byte ~= -1: stdin was
+      -- piped in (e.g. `git diff | nvim -`) so the buffer already has content
+      return
+    end
+    require('custom.session').restore()
+  end,
+})
+
+vim.api.nvim_create_autocmd('VimLeavePre', {
+  callback = function()
+    require('custom.session').save()
+  end,
+})

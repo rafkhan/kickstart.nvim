@@ -1082,6 +1082,16 @@ require('lazy').setup({
         return '%2l:%-2v'
       end
 
+      -- Session persistence, one global session per project directory.
+      -- Autoread/autowrite of the default session is handled by
+      -- lua/custom/session.lua, wired up via autocmds in autocmds.lua.
+      require('mini.sessions').setup {
+        autoread = false,
+        autowrite = true,
+        directory = vim.fn.stdpath 'data' .. '/sessions',
+        file = '',
+      }
+
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
